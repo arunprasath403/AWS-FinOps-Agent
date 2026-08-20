@@ -8,7 +8,7 @@ An autonomous, multi-region cloud discovery, FinOps governance, and architectura
 
 The platform decouples live infrastructure state discovery from generative reasoning through a three-stage orchestrated pipeline:
 
- (./architecture.png)
+ (./FinOps_architecture.png)
 
 * **Discovery Orchestrator**: Executes concurrent multi-region API sweeps across 15+ AWS resource types alongside Cost Explorer trend and forecast extraction.
 * **Deterministic Compression Engine**: Sanitizes, tallies, and condenses raw multi-region infrastructure state into a high-density, context-optimized schema that prevents LLM context window saturation.
