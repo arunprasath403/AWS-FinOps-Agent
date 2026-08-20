@@ -1,63 +1,101 @@
 # AWS FinOps & Infrastructure Intelligence Agent
 
-An autonomous multi-region cloud discovery, FinOps governance, and architectural reasoning engine built on **Amazon Bedrock AgentCore Runtime**, **Anthropic Claude Sonnet**, and the **Model Context Protocol (MCP)**.
+An autonomous, multi-region cloud discovery, FinOps governance, and architectural reasoning engine built on **Amazon Bedrock AgentCore Runtime**, **Anthropic Claude Sonnet**, and the **Model Context Protocol (MCP)**.
 
 ---
 
-## Architecture Overview
+## Architectural Topology
 
-The platform decouples live infrastructure state discovery from generative reasoning through a three-stage pipeline:
+The platform decouples live infrastructure state discovery from generative reasoning through a three-stage orchestrated pipeline:
 
-* **Discovery Orchestrator**: Executes concurrent multi-region API sweeps across 15+ AWS resource types alongside Cost Explorer trend extraction.
-* **Deterministic Compression Engine**: Sanitizes, tallies, and condenses raw infrastructure state into a high-density, context-optimized schema.
+ (./architecture.png)
+
+* **Discovery Orchestrator**: Executes concurrent multi-region API sweeps across 15+ AWS resource types alongside Cost Explorer trend and forecast extraction.
+* **Deterministic Compression Engine**: Sanitizes, tallies, and condenses raw multi-region infrastructure state into a high-density, context-optimized schema that prevents LLM context window saturation.
 * **AgentCore & MCP Gateway**: Evaluates aggregated telemetry via Claude Sonnet to generate an enterprise cloud audit spanning cost leakages, security boundaries, and modernization opportunities.
 
 ---
 
-## Architectural Comparison
+## Architectural Comparison: AWS Native FinOps vs. Custom AgentCore & MCP Engine
 
-| Strategic Dimension | AWS Native Cost Optimization Hub | Custom AgentCore + MCP FinOps Platform |
+| Dimension | AWS Native Cost Optimization Hub / FinOps | Custom Bedrock AgentCore + MCP FinOps Platform |
 | --- | --- | --- |
-| **Telemetry Ingestion** | Asynchronous batch processing of billing logs (CUR, Cost Explorer, CloudWatch) | Real-time, synchronous multi-region discovery via parallel execution threads |
-| **Waste Detection Latency** | 24 to 48 hour processing window for metric aggregation | Instant runtime detection for unattached storage, unassociated IPs, and idle gateways |
-| **LLM Context Management** | Managed internal routing | Deterministic JSON compression preventing context window saturation and excess token spend |
-| **Evaluation Scope** | Focused primarily on cost, instance sizing, and utilization metrics | Unified audit covering FinOps waste, exposure boundaries (0.0.0.0/0 on admin ports), and modernization vectors |
-| **Interoperability Standard** | Proprietary AWS Management Console integrations | Open **Model Context Protocol (MCP)** standard compatible with Bedrock MCP Gateway, Claude Desktop, and developer IDEs |
-| **Deployment Footprint** | AWS-managed SaaS control plane | Flexible deployment on **Bedrock AgentCore Runtime**, ECS/Fargate container, or secure local execution |
-| **Operational Overhead** | Fixed service/tier pricing and potential licensing overhead | Zero SaaS markup; standard AWS API consumption and direct Bedrock foundation model token billing |
+| **Telemetry Ingestion Model** | Asynchronous batch processing of billing records, CUR reports, and CloudWatch metrics. | Real-time, synchronous multi-region discovery via parallel worker threads (`ThreadPoolExecutor`). |
+| **Waste Detection Latency** | 24 to 48 hour processing window for metric aggregation and recommendation engine runs. | Instant runtime detection for unattached EBS storage, idle EIPs, and unassociated assets. |
+| **LLM Context Optimization** | Opaque managed internal prompt routing. | Deterministic JSON compression minimizing token consumption and eliminating context window overflow. |
+| **Evaluation Scope** | Focused primarily on cost, instance sizing, and utilization metrics. | Unified audit covering FinOps waste, perimeter security (`0.0.0.0/0` admin ports), and modernization vectors. |
+| **Interoperability Standard** | Proprietary AWS Management Console integrations. | Open **Model Context Protocol (MCP)** standard compatible with Bedrock MCP Gateway, Claude Desktop, and developer IDEs. |
+| **Deployment Footprint** | AWS-managed SaaS control plane. | Serverless **Bedrock AgentCore Runtime**, ECS/Fargate container, or secure local execution. |
+| **Operational Overhead** | Fixed service/tier pricing and potential Compute Optimizer licensing overhead. | Direct Bedrock Converse token consumption + standard AWS read-only API calls with zero SaaS markup. |
 
 ---
 
-## Core Capabilities & Discovery Surface
+## Comprehensive Discovery & Governance Surface
 
-* **Compute Topology**: EC2 operational states, Auto Scaling Group boundaries, Lambda deployments, and ECS/EKS container cluster footprints.
-* **Network & Perimeter Security**: VPC routing, NAT Gateway base cost baselines, unassociated Elastic IPs, security group rule exposure (`0.0.0.0/0` on ports `22` and `3389`), and WAFv2 WebACL allocations.
-* **Database & Persistence**: RDS instance engine distribution (differentiating legacy vs. open-source/serverless), DynamoDB tables, and S3 storage footprints.
-* **Application Integration**: API Gateway endpoints, SQS queuing backlogs, SNS notification topographies, and EventBridge routing rules.
-* **Financial Waste Attribution**: Automated cost run-rate calculations for unattached EBS storage volumes, unassociated Elastic IPs, and underutilized network transitions.
+The discovery layer performs deep inspection across regional and global AWS services:
+
+### 1. Compute & Containers
+
+* **Amazon EC2**: Audits total instances, active running vs. stopped workloads, and instance distributions across all available regions.
+* **Auto Scaling Groups (ASG)**: Identifies active fleet configurations and scale boundaries.
+* **AWS Lambda**: Aggregates serverless functions to evaluate serverless adoption and event-driven patterns.
+* **Amazon ECS & Amazon EKS**: Maps container clusters across regions to gauge containerization density.
+
+### 2. Networking, Edge & Perimeter Security
+
+* **VPC & Routing**: Inventories VPC boundaries, route tables, and subnet configurations.
+* **NAT Gateways**: Calculates base run-rate cost projections ($32.40/month baseline per NAT Gateway) before data transfer.
+* **Elastic IP Addresses**: Discovers unassociated and idle EIPs incurring hourly idle charges.
+* **Security Groups**: Identifies range-aware ingress exposures permitting unrestricted access (`0.0.0.0/0`) on administrative ports `22` (SSH) and `3389` (RDP).
+* **AWS WAFv2**: Verifies regional and CloudFront WebACL coverage across edge deployments.
+* **Elastic Load Balancing (ELBv2)**: Catalogs Application and Network Load Balancers.
+
+### 3. Databases, Storage & Identity
+
+* **Amazon RDS**: Inspects database instances and breaks down database engines to identify legacy vs. modern open-source engines (e.g., PostgreSQL, MySQL, Aurora).
+* **Amazon DynamoDB**: Catalogs NoSQL tables across all regions.
+* **Amazon S3**: Inventories global object storage buckets.
+* **Amazon ECR**: Tracks container image repositories.
+* **AWS IAM & Secrets Manager**: Catalogs IAM users, IAM roles, and encrypted secrets footprints.
+
+### 4. Integration & Messaging
+
+* **Amazon API Gateway**: Inventories REST API infrastructure.
+* **Amazon SQS & Amazon SNS**: Catalogs message queues and notification topics.
+* **Amazon EventBridge**: Audits active event bus routing rules.
+
+### 5. Cost Explorer Intelligence
+
+* **Historical Lookback**: Extracts 30-day unblended cost metrics grouped by AWS service.
+* **Top Spenders**: Ranks top 10 contributing services by total cost.
+* **Predictive Forecasting**: Projects next 30-day billing volume using AWS Cost Explorer predictive models.
 
 ---
 
-## Deployment & Runtime Configuration
+## Amazon Bedrock AgentCore Runtime Configuration
 
-### Bedrock AgentCore Runtime
+The agent natively implements the `bedrock-agentcore` SDK, supporting serverless invocation and containerized deployments.
 
-The platform integrates natively with `bedrock-agentcore` to execute as a serverless agent runtime.
+### AgentCore Runtime Entrypoint (`main.py`)
 
-**Deployment Package Structure**
+```python
+from bedrock_agentcore import BedrockAgentCoreApp
 
-```text
-agent-deployment-bundle/
-├── main.py                     # AgentCore entrypoint and discovery engine
-├── requirements.txt            # System dependencies
-└── iam/
-    └── execution_policy.json   # Least-privilege IAM policy
+app = BedrockAgentCoreApp()
+
+@app.entrypoint
+def invoke(payload):
+    session_id = payload.get("sessionId", str(uuid.uuid4()))
+    return {"sessionId": session_id, "result": run_full_cloud_analysis()}
+
+if __name__ == "__main__":
+    app.run()
 
 ```
 
-**Packaging & Deployment Steps**
+### Packaging for Bedrock AgentCore
 
-1. Package the deployment bundle into an archive artifact:
+1. Archive the core engine and its dependency manifest:
 ```bash
 zip -r finops-agentcore-runtime.zip main.py requirements.txt
 aws s3 cp finops-agentcore-runtime.zip s3://<deployment-artifacts-bucket>/
@@ -65,15 +103,19 @@ aws s3 cp finops-agentcore-runtime.zip s3://<deployment-artifacts-bucket>/
 ```
 
 
-2. Provision the agent inside the Amazon Bedrock console or via AWS CLI targeting the `anthropic.claude-sonnet-4-6` foundation model.
+2. Set runtime environment variables:
+* `AWS_REGION`: Primary AWS region for Bedrock inference (default: `us-east-1`).
+* `BEDROCK_AGENTCORE_TIMEOUT`: `900` (accommodates high-concurrency multi-region discovery).
+
+
 
 ---
 
-## Bedrock MCP Gateway & Client Integration
+## Bedrock MCP Gateway & Client Configuration
 
-The platform functions as a standardized Model Context Protocol (MCP) server, allowing autonomous agent workflows, enterprise LLM platforms, and developer tooling to query cloud telemetry on demand.
+The platform functions as a standardized Model Context Protocol (MCP) tool server, allowing autonomous agent workflows, enterprise LLM platforms, and developer tooling to query live cloud telemetry on demand.
 
-### Bedrock AgentCore Gateway Target Definition
+### 1. Bedrock AgentCore Gateway Target Definition
 
 Register the FinOps agent as an active MCP endpoint in your Bedrock AgentCore Gateway:
 
@@ -96,19 +138,26 @@ Register the FinOps agent as an active MCP endpoint in your Bedrock AgentCore Ga
 
 ```
 
-### Desktop & IDE MCP Configuration
+### 2. Desktop & IDE MCP Configuration
 
-To interface with the agent directly from **Claude Desktop** or **Cursor**, add the runtime specification to `claude_desktop_config.json`:
+To interface with the agent directly from **Claude Desktop** or **Cursor**, add the runtime specification to your client's `claude_desktop_config.json`:
 
 ```json
 {
   "mcpServers": {
     "aws-finops-agent": {
       "command": "python",
-      "args": ["/path/to/AWS_FinOps_Agent/main.py"],
+      "args": ["D:\\AWS_agent_template\\AWS_FinOps_Agent\\main.py"],
       "env": {
         "AWS_REGION": "us-east-1",
         "AWS_PROFILE": "default"
+      }
+    },
+    "aws-cost-mcp-gateway": {
+      "command": "npx",
+      "args": ["-y", "@aws-mcp/cost-management-gateway"],
+      "env": {
+        "AWS_REGION": "us-east-1"
       }
     }
   }
@@ -118,9 +167,9 @@ To interface with the agent directly from **Claude Desktop** or **Cursor**, add 
 
 ---
 
-## Security & Least-Privilege IAM Governance
+## Security & Least-Privilege IAM Policy
 
-The agent operates strictly in an inspection capacity. Deploy the execution role with read-only administrative visibility across target discovery resources:
+The agent executes with read-only visibility. Attach this policy to the execution role running the discovery engine:
 
 ```json
 {
@@ -176,7 +225,7 @@ The agent operates strictly in an inspection capacity. Deploy the execution role
 
 ---
 
-## Quickstart
+## Installation & Local Execution
 
 ### 1. Environment Setup
 
@@ -185,10 +234,10 @@ git clone https://github.com/arunprasath403/AWS-FinOps-Agent.git
 cd AWS-FinOps-Agent
 
 python -m venv venv
-# Linux/macOS:
-source venv/bin/activate
-# Windows:
+# On Windows:
 .\venv\Scripts\Activate.ps1
+# On Linux/macOS:
+source venv/bin/activate
 
 pip install -r requirements.txt
 
@@ -197,10 +246,10 @@ pip install -r requirements.txt
 ### 2. Operational Execution
 
 ```bash
-# Configure region and profile
+# Configure region
 export AWS_REGION="us-east-1"
 
-# Trigger discovery and analysis engine
+# Run discovery and analysis agent
 python main.py
 
 ```
@@ -219,9 +268,31 @@ The discovery runtime produces a deterministic JSON schema containing telemetry 
     "compressed_inventory": {
       "active_regions_count": 16,
       "aggregated_resources": {
-        "compute": { "ec2_total": 42, "ec2_running": 31, "lambda": 128 },
-        "network_security": { "nat_gateways": 6, "critical_open_sgs": 2 },
-        "finops_waste": { "unattached_ebs": 14, "unused_eips": 5 },
+        "compute": {
+          "ec2_total": 42,
+          "ec2_running": 31,
+          "lambda": 128,
+          "ecs_clusters": 2,
+          "eks_clusters": 1,
+          "asg_groups": 4
+        },
+        "network_security": {
+          "vpcs": 4,
+          "nat_gateways": 6,
+          "critical_open_sgs": 2,
+          "elbs": 5,
+          "waf_regional_acls": 2,
+          "waf_cloudfront_acls": 1
+        },
+        "databases": {
+          "rds": 6,
+          "rds_engines": { "postgres": 4, "mysql": 2 },
+          "dynamodb": 12
+        },
+        "finops_waste": {
+          "unattached_ebs": 14,
+          "unused_eips": 5
+        },
         "estimated_monthly_savings": 90.00
       }
     },
@@ -235,4 +306,4 @@ The discovery runtime produces a deterministic JSON schema containing telemetry 
 
 ## License
 
-This project is licensed under the [MIT License](https://www.google.com/search?q=LICENSE).
+Distributed under the [MIT License](https://www.google.com/search?q=LICENSE).
