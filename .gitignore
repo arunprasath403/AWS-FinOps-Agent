@@ -1,0 +1,17 @@
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.dist-info/
+*.egg-info/
+
+# Virtual environments & local dependency folders
+.venv/
+venv/
+env/
+agent_deployment/
+
+# Environment configs & secrets
+.env
+*.pem
+credentials

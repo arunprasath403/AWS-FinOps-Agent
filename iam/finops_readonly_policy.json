@@ -1,0 +1,48 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "FinOpsCostRead",
+      "Effect": "Allow",
+      "Action": [
+        "ce:GetCostAndUsage",
+        "ce:GetCostForecast"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InfrastructureDiscoveryRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:Describe*",
+        "rds:DescribeDBInstances",
+        "elasticloadbalancing:DescribeLoadBalancers",
+        "lambda:ListFunctions",
+        "dynamodb:ListTables",
+        "ecr:DescribeRepositories",
+        "apigateway:GET",
+        "ecs:ListClusters",
+        "eks:ListClusters",
+        "autoscaling:DescribeAutoScalingGroups",
+        "secretsmanager:ListSecrets",
+        "wafv2:ListWebACLs",
+        "sqs:ListQueues",
+        "sns:ListTopics",
+        "events:ListRules",
+        "s3:ListAllMyBuckets",
+        "iam:ListUsers",
+        "iam:ListRoles",
+        "cloudfront:ListDistributions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockInvokeAccess",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:InvokeModel"
+      ],
+      "Resource": "arn:aws:bedrock:*::foundation-model/anthropic.claude-sonnet-4-6"
+    }
+  ]
+}
