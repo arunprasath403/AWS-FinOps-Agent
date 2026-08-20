@@ -4,7 +4,7 @@ An autonomous AWS infrastructure discovery, FinOps, security posture, and archit
 
 The system discovers AWS infrastructure across regions, performs deterministic FinOps and security analysis, compresses infrastructure context, and uses an LLM for architectural reasoning and enterprise reporting.
 
-![AWS FinOps & Infrastructure Intelligence Agent Architecture](./architecture.png)
+![AWS FinOps & Infrastructure Intelligence Agent Architecture](./FinOps_architecture.png)
 
 The resulting compact infrastructure state is then passed to the intelligence layer for architectural reasoning.
 
@@ -102,7 +102,7 @@ The complete architecture is available in:
 
 ```text
 
-architecture.png
+FinOps_architecture.png
 
 The architecture diagram represents the complete flow from AWS infrastructure discovery through deterministic analysis, context compression, Bedrock intelligence, and final enterprise audit generation.
 
