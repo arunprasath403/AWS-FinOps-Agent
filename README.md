@@ -1,6 +1,6 @@
 # AWS FinOps & Infrastructure Intelligence Agent
 
-An autonomous, multi-region cloud discovery, FinOps governance, and architectural reasoning engine built on **Amazon Bedrock AgentCore Runtime**, **Anthropic Claude Sonnet**, and the **Model Context Protocol (MCP)**.
+An autonomous, multi-region cloud discovery, FinOps governance, and architectural reasoning engine built on **Amazon Bedrock AgentCore Runtime**, **Anthropic Claude Sonnet**, and the **Model Contex[...]
 
 ---
 
@@ -8,10 +8,10 @@ An autonomous, multi-region cloud discovery, FinOps governance, and architectura
 
 The platform decouples live infrastructure state discovery from generative reasoning through a three-stage orchestrated pipeline:
 
- (./FinOps_architecture.png)
+![AWS FinOps Architecture](./FinOps_architecture.png)
 
 * **Discovery Orchestrator**: Executes concurrent multi-region API sweeps across 15+ AWS resource types alongside Cost Explorer trend and forecast extraction.
-* **Deterministic Compression Engine**: Sanitizes, tallies, and condenses raw multi-region infrastructure state into a high-density, context-optimized schema that prevents LLM context window saturation.
+* **Deterministic Compression Engine**: Sanitizes, tallies, and condenses raw multi-region infrastructure state into a high-density, context-optimized schema that prevents LLM context window satur[...]
 * **AgentCore & MCP Gateway**: Evaluates aggregated telemetry via Claude Sonnet to generate an enterprise cloud audit spanning cost leakages, security boundaries, and modernization opportunities.
 
 ---
@@ -20,13 +20,13 @@ The platform decouples live infrastructure state discovery from generative reaso
 
 | Dimension | AWS Native Cost Optimization Hub / FinOps | Custom Bedrock AgentCore + MCP FinOps Platform |
 | --- | --- | --- |
-| **Telemetry Ingestion Model** | Asynchronous batch processing of billing records, CUR reports, and CloudWatch metrics. | Real-time, synchronous multi-region discovery via parallel worker threads (`ThreadPoolExecutor`). |
-| **Waste Detection Latency** | 24 to 48 hour processing window for metric aggregation and recommendation engine runs. | Instant runtime detection for unattached EBS storage, idle EIPs, and unassociated assets. |
+| **Telemetry Ingestion Model** | Asynchronous batch processing of billing records, CUR reports, and CloudWatch metrics. | Real-time, synchronous multi-region discovery via parallel worker threads[...] |
+| **Waste Detection Latency** | 24 to 48 hour processing window for metric aggregation and recommendation engine runs. | Instant runtime detection for unattached EBS storage, idle EIPs, and unasso[...] |
 | **LLM Context Optimization** | Opaque managed internal prompt routing. | Deterministic JSON compression minimizing token consumption and eliminating context window overflow. |
-| **Evaluation Scope** | Focused primarily on cost, instance sizing, and utilization metrics. | Unified audit covering FinOps waste, perimeter security (`0.0.0.0/0` admin ports), and modernization vectors. |
-| **Interoperability Standard** | Proprietary AWS Management Console integrations. | Open **Model Context Protocol (MCP)** standard compatible with Bedrock MCP Gateway, Claude Desktop, and developer IDEs. |
+| **Evaluation Scope** | Focused primarily on cost, instance sizing, and utilization metrics. | Unified audit covering FinOps waste, perimeter security (`0.0.0.0/0` admin ports), and modernization[...] |
+| **Interoperability Standard** | Proprietary AWS Management Console integrations. | Open **Model Context Protocol (MCP)** standard compatible with Bedrock MCP Gateway, Claude Desktop, and develop[...] |
 | **Deployment Footprint** | AWS-managed SaaS control plane. | Serverless **Bedrock AgentCore Runtime**, ECS/Fargate container, or secure local execution. |
-| **Operational Overhead** | Fixed service/tier pricing and potential Compute Optimizer licensing overhead. | Direct Bedrock Converse token consumption + standard AWS read-only API calls with zero SaaS markup. |
+| **Operational Overhead** | Fixed service/tier pricing and potential Compute Optimizer licensing overhead. | Direct Bedrock Converse token consumption + standard AWS read-only API calls with zero[...] |
 
 ---
 
@@ -113,7 +113,7 @@ aws s3 cp finops-agentcore-runtime.zip s3://<deployment-artifacts-bucket>/
 
 ## Bedrock MCP Gateway & Client Configuration
 
-The platform functions as a standardized Model Context Protocol (MCP) tool server, allowing autonomous agent workflows, enterprise LLM platforms, and developer tooling to query live cloud telemetry on demand.
+The platform functions as a standardized Model Context Protocol (MCP) tool server, allowing autonomous agent workflows, enterprise LLM platforms, and developer tooling to query live cloud telemet[...]
 
 ### 1. Bedrock AgentCore Gateway Target Definition
 
